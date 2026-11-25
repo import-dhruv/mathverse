@@ -5,22 +5,9 @@ import {
 } from 'lucide-react'
 import { ALL_TOPICS } from '../data'
 import { go } from '../lib/router'
+import { searchPapers, type PaperResult } from '../lib/paperSearch'
 
-type PaperRecord = {
-  id: string
-  title: string
-  year: number | null
-  authors: string[]
-  venue: string | null
-  citedBy: number
-  abstract: string
-  doi: string | null
-  landingUrl: string
-  oaUrl: string | null
-  isOa: boolean
-  type: string | null
-}
-type Result = { source: string; total: number; papers: PaperRecord[]; nextCursor?: string | null; nextOffset?: number }
+type Result = PaperResult
 type Source = 'openalex' | 'crossref'
 
 const SAVED_KEY = 'mathverse-reading-list-v1'
@@ -58,19 +45,15 @@ export function PapersPage() {
     if (!query.trim()) return
     setLoading(true); setError('')
     try {
-      const params = new URLSearchParams({ q: query, perPage: '15' })
-      if (year) params.set('year', year)
-      if (source === 'openalex') {
-        params.set('cursor', nextPage === 0 ? '*' : (cursors[nextPage] ?? '*'))
-        params.set('sort', sort)
-        if (oaOnly) params.set('oaOnly', 'true')
-      } else params.set('offset', String(nextPage * 15))
-      const res = await fetch(`/api/${source === 'openalex' ? 'papers' : 'crossref'}?${params}`)
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Search failed')
+      const data = await searchPapers(source, {
+        query, year, oaOnly, sort,
+        cursor: nextPage === 0 ? '*' : (cursors[nextPage] ?? '*'),
+        page: nextPage, perPage: 15,
+      })
       setResult(data)
       setPage(nextPage)
-      if (data.nextCursor) setCursors(prev => { const next = [...prev]; next[nextPage + 1] = data.nextCursor; return next })
+      const nc = data.nextCursor
+      if (nc) setCursors(prev => { const next = [...prev]; next[nextPage + 1] = nc; return next })
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Something went wrong.')
       setResult(null)
@@ -80,6 +63,18 @@ export function PapersPage() {
   useEffect(() => {
     setResult(null); setCursors(['*']); setPage(0)
   }, [source, oaOnly, sort, year])
+
+  // Shareable deep link: #/papers?q=...
+  useEffect(() => {
+    const raw = window.location.hash.split('?')[1] ?? ''
+    const initial = new URLSearchParams(raw).get('q')
+    if (!initial) return
+    setQ(initial); setQuery(initial); setLoading(true)
+    searchPapers('openalex', { query: initial, year: '', oaOnly: false, sort: 'relevance_score:desc', cursor: '*', page: 0, perPage: 15 })
+      .then(data => setResult(data))
+      .catch(e => setError(e instanceof Error ? e.message : 'Search failed'))
+      .finally(() => setLoading(false))
+  }, [])
 
   const savedPapers = useMemo(() => saved, [saved])
   const toggleSave = (id: string) => setSaved(s => s.includes(id) ? s.filter(x => x !== id) : [id, ...s])

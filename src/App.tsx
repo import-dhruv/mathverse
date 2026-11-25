@@ -95,7 +95,8 @@ function Sidebar({ route, onSearch, mobile, close }: { route: string; onSearch: 
 
 function RouteView({ route }: { route: string }) {
   const parts = route.split('/').filter(Boolean)
-  const [area, id] = parts
+  const [areaRaw, id] = parts
+  const area = areaRaw.split('?')[0]
   if (!area) return <HomePage />
   switch (area) {
     case 'explore': case 'branch': return id ? <BranchPage id={id} /> : <ExplorePage />
