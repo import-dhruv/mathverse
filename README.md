@@ -2,6 +2,9 @@
 
 **The Complete Interactive Universe of Mathematics** — an original, from-first-principles learning, experimentation and research environment built as a single integrated web application.
 
+- **Live deployment:** https://mathverse-chi.vercel.app
+- **Source:** https://github.com/import-dhruv/mathverse
+
 > **Scope note.** This is a working, integrated foundation, not a claim to contain every fact ever written about mathematics. It ships a complete canonical knowledge architecture (34 branches, 558 topics), deep long-form articles for a curated core set, honestly labelled curriculum outlines for the remainder, a derivation library, authored and generated problem banks, 35 live visualizations, 15 laboratories, a Proof Studio, a knowledge graph, eight learning paths, a history and research-frontier explorer, an open-access reference library, and local mastery tracking. Run `npm run check` to verify structural integrity. Areas without full long-form coverage are marked **Curriculum outline** in the UI — never presented as complete.
 
 ## Run locally
