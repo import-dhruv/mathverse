@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Search as SearchIcon, X, CornerDownLeft } from 'lucide-react'
-import { ALL_TOPICS, DERIVATIONS, PROBLEMS, BRANCHES, MATHEMATICIANS, FRONTIERS, LABS, REFERENCES, PAPERS } from '../data'
+import { ALL_TOPICS, DERIVATIONS, PROBLEMS, BRANCHES, MATHEMATICIANS, FRONTIERS, LABS, REFERENCES, PAPERS, PROOF_ATLAS } from '../data'
 import { SIMULATIONS } from '../data/simulations'
 import { GENERATED_FAMILIES, INTERNATIONAL_FAMILIES } from '../data/generated'
 import { go } from '../lib/router'
@@ -22,6 +22,7 @@ function buildIndex(): SearchHit[] {
   PAPERS.forEach(p => hits.push({ id: 'pa-' + p.id, title: p.title, sub: `${p.authors.slice(0, 3).join(', ')} · ${p.year}`, group: 'Papers', path: '/library', color: '#b98cff' }))
   GENERATED_FAMILIES.forEach(f => hits.push({ id: 'g-' + f.id, title: `${f.title} — generated set`, sub: '500 deterministic variants', group: 'Generated problems', path: `/problem/gen-${f.id}-0`, color: '#ffb454' }))
   INTERNATIONAL_FAMILIES.forEach(f => hits.push({ id: 'i-' + f.id, title: `${f.title} — international level`, sub: '500 olympiad-style variants', group: 'International problems', path: `/problem/intl-${f.id}-0`, color: '#c79cff' }))
+  PROOF_ATLAS.forEach(proof => hits.push({ id: 'pr-' + proof.id, title: proof.title, sub: `${proof.field} · ${proof.status}`, group: 'Proof atlas', path: `/proof?p=${proof.id}`, color: '#4fd1a5' }))
   return hits
 }
 

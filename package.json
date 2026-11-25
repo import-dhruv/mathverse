@@ -12,7 +12,8 @@
     "check:math": "node scripts/check-math.mjs",
     "check:generated": "node scripts/check-generated.mjs",
     "check:atlas": "node scripts/check-atlas.mjs",
-    "check": "npm run typecheck && npm run check:content && npm run check:math && npm run check:generated && npm run check:atlas"
+    "check:proofs": "node scripts/check-proofs.mjs",
+    "check": "npm run typecheck && npm run check:content && npm run check:math && npm run check:generated && npm run check:atlas && npm run check:proofs"
   },
   "dependencies": {
     "katex": "^0.16.22",

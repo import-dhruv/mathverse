@@ -96,6 +96,26 @@ export interface Problem {
   further?: string
 }
 
+export interface ProofRecord {
+  id: string
+  title: string
+  field: string
+  topicIds: string[]
+  level: Level
+  status: 'Theorem' | 'Lemma' | 'Corollary' | 'Classical result' | 'Proof sketch' | 'Open problem'
+  statement: string            // LaTeX
+  hypotheses: string[]
+  conclusion: string
+  idea: string                 // the single decisive insight
+  steps: { title: string; text: string; math?: string }[]
+  keyLemma?: string
+  assumptionsUsed: string[]
+  edgeCases: string[]
+  applications: string[]
+  formalNote?: string
+  references: string[]         // real, verifiable open resources or standard texts
+}
+
 export interface ProofTechnique {
   id: string
   title: string

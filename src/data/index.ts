@@ -1,4 +1,4 @@
-import type { Topic, Block, Level, Derivation, Problem, ReferenceItem, LearningPath, TimelineEvent, Frontier, Mathematician } from '../lib/types'
+import type { Topic, Block, Level, Derivation, Problem, ReferenceItem, LearningPath, TimelineEvent, Frontier, Mathematician, ProofRecord } from '../lib/types'
 import { BRANCHES, BRANCH_BY_ID, ALL_TOPIC_IDS, PART_NAMES } from './architecture'
 import { P1_TOPICS, P1_DERIVATIONS, P1_PROBLEMS } from './content.part1'
 import { P2_TOPICS, P2_DERIVATIONS, P2_PROBLEMS } from './content.part2'
@@ -13,6 +13,13 @@ import {
 } from './content.research'
 import { FRONTIERS, FRONTIER_BY_ID } from './content.frontiers'
 import { PROOF_TECHNIQUES, PROOF_EXERCISES } from './proofs'
+import { PROOF_SOURCES, PROOF_CULTURE } from './content.proofSources'
+import { FOUNDATION_PROOFS } from './content.proofs.foundations'
+import { ALGEBRA_PROOFS } from './content.proofs.algebra'
+import { ANALYSIS_PROOFS } from './content.proofs.analysis'
+import { GEOMETRY_PROOFS } from './content.proofs.geometry'
+import { PROBABILITY_PROOFS } from './content.proofs.probability'
+import { APPLIED_PROOFS } from './content.proofs.applied'
 import { LABS, LAB_BY_ID } from './labs'
 import { SIMULATIONS, SIM_BY_ID } from './simulations'
 import { GENERATED_FAMILIES, GENERATED_COUNT, INTERNATIONAL_FAMILIES, INTERNATIONAL_COUNT, ALL_GENERATED_COUNT } from './generated'
@@ -21,6 +28,7 @@ import { PAPERS, PAPER_BY_ID, PAPERS_BY_TOPIC, PAPERS_BY_FRONTIER, PAPER_CATEGOR
 export {
   BRANCHES, BRANCH_BY_ID, ALL_TOPIC_IDS, PART_NAMES, REFERENCES, LEARNING_PATHS, TIMELINE,
   MATHEMATICIANS, FRONTIERS, FRONTIER_BY_ID, PROOF_TECHNIQUES, PROOF_EXERCISES,
+  PROOF_SOURCES, PROOF_CULTURE,
   LABS, LAB_BY_ID, SIMULATIONS, SIM_BY_ID, GENERATED_FAMILIES, GENERATED_COUNT,
   INTERNATIONAL_FAMILIES, INTERNATIONAL_COUNT, ALL_GENERATED_COUNT,
   PAPERS, PAPER_BY_ID, PAPERS_BY_TOPIC, PAPERS_BY_FRONTIER, PAPER_CATEGORIES,
@@ -38,6 +46,12 @@ export {
 const AUTHORED: Topic[] = [...P1_TOPICS, ...P2_TOPICS, ...P3_TOPICS, ...P4_TOPICS]
 export const TOPICS: Topic[] = [...new Map(AUTHORED.map(t => [t.id, t])).values()]
 const DEEP = new Set(TOPICS.map(t => t.id))
+
+export const PROOF_ATLAS: ProofRecord[] = [
+  ...FOUNDATION_PROOFS, ...ALGEBRA_PROOFS, ...ANALYSIS_PROOFS,
+  ...GEOMETRY_PROOFS, ...PROBABILITY_PROOFS, ...APPLIED_PROOFS,
+]
+export const PROOF_BY_ID = Object.fromEntries(PROOF_ATLAS.map(p => [p.id, p])) as Record<string, ProofRecord>
 
 export const DERIVATIONS: Derivation[] = [...P1_DERIVATIONS, ...P2_DERIVATIONS, ...P3_DERIVATIONS, ...P4_DERIVATIONS]
 export const PROBLEMS: Problem[] = [...P1_PROBLEMS, ...P2_PROBLEMS, ...P3_PROBLEMS, ...P4_PROBLEMS]
@@ -159,6 +173,7 @@ export const STATS = {
   labs: LABS.length,
   proofTechniques: PROOF_TECHNIQUES.length,
   proofExercises: PROOF_EXERCISES.length,
+  proofAtlas: PROOF_ATLAS.length,
   references: REFERENCES.length,
   paths: LEARNING_PATHS.length,
   timeline: TIMELINE.length,

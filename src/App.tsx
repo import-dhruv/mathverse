@@ -8,6 +8,7 @@ import { GlobalSearch } from './components/Search'
 import { useRoute, go } from './lib/router'
 import { useProgress, progress } from './lib/store'
 import { STATS } from './data'
+import { PROOF_ATLAS } from './data'
 
 import { HomePage } from './pages/Home'
 import { ExplorePage, BranchPage } from './pages/Explore'
@@ -72,6 +73,7 @@ function Sidebar({ route, onSearch, mobile, close }: { route: string; onSearch: 
             <button key={n.path} className={`nav-item ${active ? 'active' : ''}`} onClick={() => { go(n.path); close() }}>
               <n.icon className="ico" size={16} /> <span>{n.label}</span>
               {n.path === '/visual' && <span className="badge">{STATS.simulations}</span>}
+              {n.path === '/proof' && <span className="badge">{PROOF_ATLAS.length}</span>}
             </button>
           )
         })}
