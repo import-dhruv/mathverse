@@ -30,7 +30,8 @@ No backend or API key is required. Progress, notes and saved experiment paramete
 | Laboratories | 15 themed labs (algebra, geometry, calculus, linear algebra, probability, statistics, DEs, number theory, optimization, graphs, complex analysis, fractals, Fourier, numerical, AI) |
 | Proof Studio | 14 proof techniques, worked examples, scaffolded exercises, rigour checklist, Lean notes |
 | Learning paths | 8 paths with a first-principles atlas: worldview, origin question, chapter-by-chapter conceptual arc, per-step question/idea/bridge rationales, essential questions, unifying themes, capstone challenge and cross-path connections |
-| Research | 21 frontiers with proven/conjecture/open labels, historical background, formal statements, prerequisites, known results, researchers, directions and references |
+| Research library | Universal research method (epistemic ladder, research cycle, modes of work), 9 detailed guides on reading/proof/writing/reviewing/tools/integrity, annotated source atlas of open databases, preprint servers, journals and software, 5 curated reading routes, research glossary, landmark papers, frontier prerequisite maps and a persistent paper-study desk with Markdown export |
+| Research frontiers | 21 frontiers with proven/conjecture/open labels, historical background, formal statements, prerequisites, known results, researchers, directions and references |
 | History | 32 milestones from Babylon to contemporary AI mathematics, 28 mathematicians, mathematical ideas rather than biographies |
 | Connections | Interactive knowledge graph with prerequisite edges and branch filters |
 | Library | Open textbooks, lecture notes, software documentation and landmark papers linked to stable search URLs — no fabricated identifiers |
