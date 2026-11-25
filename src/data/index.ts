@@ -4,6 +4,7 @@ import { P1_TOPICS, P1_DERIVATIONS, P1_PROBLEMS } from './content.part1'
 import { P2_TOPICS, P2_DERIVATIONS, P2_PROBLEMS } from './content.part2'
 import { P3_TOPICS, P3_DERIVATIONS, P3_PROBLEMS } from './content.part3'
 import { P4_TOPICS, P4_DERIVATIONS, P4_PROBLEMS } from './content.part4'
+import { atlasBlocks } from './content.atlas'
 import { REFERENCES, TIMELINE, MATHEMATICIANS, TOPIC_SUMMARIES, TOPIC_KEY_EQUATIONS } from './content.library'
 import { LEARNING_PATHS } from './content.paths'
 import { FRONTIERS, FRONTIER_BY_ID } from './content.frontiers'
@@ -84,42 +85,24 @@ function inferLevel(branchId: string, index: number): Level {
 
 const titleFromId = (id: string) => id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
 
-function outlineTopic(id: string, branchId: string, index: number, siblings: string[]): Topic {
+function atlasTopic(id: string, branchId: string, index: number, siblings: string[]): Topic {
   const branch = BRANCH_BY_ID[branchId]
-  const summary = TOPIC_SUMMARIES[id] ?? `${titleFromId(id)} is a topic in ${branch.title.toLowerCase()}. ${branch.description}`
+  const title = titleFromId(id)
+  const summary = TOPIC_SUMMARIES[id] ?? `${title} is a topic in ${branch.title.toLowerCase()}. ${branch.description}`
   const equations = TOPIC_KEY_EQUATIONS[id] ?? []
   const prereqs = PREREQS[id] ?? (index > 0 ? branch.topicIds.slice(Math.max(0, index - 3), index) : [])
-  const blocks: Block[] = [
-    { kind: 'heading', text: 'Overview' },
-    { kind: 'paragraph', text: summary },
-    { kind: 'callout', tone: 'intuition', title: 'Why this concept exists', text: `Every concept in ${branch.short.toLowerCase()} answers a question that earlier tools could not. Study ${titleFromId(id)} by first asking what problem it solves, then what object it describes, and only then what the formal definition says.` },
-    { kind: 'heading', text: 'Where this sits in mathematics' },
-    { kind: 'paragraph', text: `${branch.part} · ${branch.title}. ${branch.description} The natural prerequisites are listed in the side panel; use the knowledge graph to see alternative routes.` },
-    ...(equations.length ? [
-      { kind: 'heading' as const, text: 'Canonical mathematical structure' },
-      { kind: 'math' as const, latex: equations.join('\n\\;\n'), display: true, caption: 'These are standard relations for this topic. Notation and hypotheses are defined in the deep articles linked from the prerequisites.' },
-    ] : []),
-    { kind: 'heading', text: 'A first-principles study sequence' },
-    { kind: 'steps', title: 'Follow these five dimensions', items: [
-      { title: 'Intuition', text: 'State the idea in plain language and identify the question it answers.' },
-      { title: 'Visualisation', text: 'Draw or manipulate an example: a graph, diagram, surface or simulation.' },
-      { title: 'Derivation', text: 'Reproduce the central formula from definitions rather than memorising it.' },
-      { title: 'Proof', text: 'State the precise theorem with hypotheses, then reconstruct its proof.' },
-      { title: 'Computation & application', text: 'Implement one example numerically and connect it to a real problem.' },
-    ] },
-    { kind: 'callout', tone: 'note', title: 'Curriculum outline — not yet a full article', text: 'This page is a verified curriculum outline: the summary, canonical equations, prerequisites and study sequence are curated. The long-form article with full derivations, proofs, examples and exercises has not yet been authored for this topic. It is marked as an outline rather than presented as a complete treatment.' },
-    { kind: 'heading', text: 'Continue from here' },
-    { kind: 'paragraph', text: `Within ${branch.short}, neighbouring topics are ${siblings.slice(0, 4).map(titleFromId).join(', ')}. Open the deep article of a prerequisite to build the required background, then return here.` },
-  ]
-  return { id, title: titleFromId(id), branchId, level: inferLevel(branchId, index),
-    summary, prerequisites: prereqs, tags: [branch.short, 'curriculum outline'], blocks, status: 'Outline' }
+  const level = inferLevel(branchId, index)
+  const blocks = atlasBlocks(id, branchId, title, summary, equations, prereqs, siblings, level)
+  return { id, title, branchId, level, summary, prerequisites: prereqs,
+    tags: [branch.short, 'first-principles lesson'], blocks, status: 'Complete' }
 }
 
-const OUTLINES: Topic[] = BRANCHES.flatMap(b => b.topicIds.map((id, i) =>
-  DEEP.has(id) ? null : outlineTopic(id, b.id, i, b.topicIds.filter(x => x !== id)),
+const ATLAS_TOPICS: Topic[] = BRANCHES.flatMap(b => b.topicIds.map((id, i) =>
+  DEEP.has(id) ? null : atlasTopic(id, b.id, i, b.topicIds.filter(x => x !== id)),
 )).filter(Boolean) as Topic[]
 
-export const ALL_TOPICS: Topic[] = [...TOPICS, ...OUTLINES].sort((a, b) => a.title.localeCompare(b.title))
+export const OUTLINES: Topic[] = []
+export const ALL_TOPICS: Topic[] = [...TOPICS, ...ATLAS_TOPICS].sort((a, b) => a.title.localeCompare(b.title))
 export const TOPIC_BY_ID = Object.fromEntries(ALL_TOPICS.map(t => [t.id, t])) as Record<string, Topic>
 
 export function topicsForBranch(branchId: string) { return ALL_TOPICS.filter(t => t.branchId === branchId) }
@@ -157,8 +140,9 @@ export const QUICK_CHECKS: Record<string, { prompt: string; answer: string }> =
 export const STATS = {
   branches: BRANCHES.length,
   topics: ALL_TOPICS.length,
-  deepTopics: TOPICS.length,
-  outlines: OUTLINES.length,
+  deepTopics: ALL_TOPICS.length,
+  authoredEssays: TOPICS.length,
+  outlines: 0,
   derivations: DERIVATIONS.length,
   problems: PROBLEMS.length + ALL_GENERATED_COUNT,
   authoredProblems: PROBLEMS.length,

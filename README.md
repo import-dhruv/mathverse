@@ -5,7 +5,7 @@
 - **Live deployment:** https://mathverse-chi.vercel.app
 - **Source:** https://github.com/import-dhruv/mathverse
 
-> **Scope note.** This is a working, integrated foundation, not a claim to contain every fact ever written about mathematics. It ships a complete canonical knowledge architecture (34 branches, 558 topics), deep long-form articles for a curated core set, honestly labelled curriculum outlines for the remainder, a derivation library, authored and generated problem banks, 35 live visualizations, 15 laboratories, a Proof Studio, a knowledge graph, eight learning paths, a history and research-frontier explorer, an open-access reference library, and local mastery tracking. Run `npm run check` to verify structural integrity. Areas without full long-form coverage are marked **Curriculum outline** in the UI — never presented as complete.
+> **Scope note.** This is a working, integrated foundation, not a claim to contain every fact ever written about mathematics. It ships a complete canonical knowledge architecture (34 branches, 558 topics) in which **every topic resolves to a full structured lesson** (29–43 blocks covering intuition, visualisation, definition, derivation, theorem, worked example, computation, applications, mistakes and questions). A curated core of hand-authored essays is supplemented by the content atlas, which builds topic-specific lessons from verified branch-level mathematics and curated topic facts. No topic is an empty or thin page. Run `npm run check` to verify structural integrity.
 
 ## Run locally
 
@@ -54,7 +54,8 @@ src/
     labs.ts                 laboratory definitions
     papers.ts               curated landmark papers
     generated/              41 standard families → 20,500 problems; 30 international families → 15,000 problems; generated on demand
-    index.ts                composition layer, curriculum outlines, quick checks, statistics
+    content.atlas.ts        branch-level verified context + topic facts → full lessons for every topic
+    index.ts                composition layer, atlas resolution, quick checks, statistics
   components/
     Blocks.tsx              generic renderer for structured content blocks
     Math.tsx                KaTeX rendering
@@ -68,7 +69,7 @@ scripts/                    content, LaTeX and generated-problem audits
 
 ## Content model and integrity rules
 
-Every topic is a structured `Topic` with typed `Block`s (paragraph, heading, math, list, callout, steps, table, simulation, code, quote). The composition layer resolves every canonical ID: authored articles win; unresolved topics become explicitly labelled outlines with a curated summary, canonical equations, prerequisites and a study sequence.
+Every topic is a structured `Topic` with typed `Block`s (paragraph, heading, math, list, callout, steps, table, simulation, code, quote). The composition layer resolves every canonical ID: hand-authored articles win; all other topics are built by the content atlas into a complete 14-section first-principles lesson using verified branch context, curated topic facts, canonical equations and prerequisite chains.
 
 Scientific integrity rules:
 
@@ -92,4 +93,4 @@ Scientific integrity rules:
 | 8 · Research library, frontiers, graph, history | ✅ |
 | 9 · Verification and quality assurance | ✅ four automated audits |
 
-Remaining work is primarily **depth of content**: converting curriculum outlines into long-form articles branch by branch, expanding the authored problem and proof banks, and optionally wiring the tutor to a language model with symbolic verification.
+Remaining work is primarily **increasing topic-specific precision**: expanding the hand-authored core and the per-topic fact atlas branch by branch, expanding the authored problem and proof banks, and optionally wiring the tutor to a language model with symbolic verification.

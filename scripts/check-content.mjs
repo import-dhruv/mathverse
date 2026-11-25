@@ -53,6 +53,6 @@ if (dupProblems.length) throw new Error(`Duplicate problem ids: ${dupProblems.jo
 const branches = [...architecture.matchAll(/\{ id: '([a-z0-9-]+)', title: '([^']+)'/g)].length
 console.log(`✓ ${canonical.size} canonical topics across ${branches} branches`)
 console.log(`✓ ${authored.length} deep articles (avg ${Math.round(authored.reduce((a, t) => a + t.blocks, 0) / authored.length)} blocks)`)
-console.log(`✓ ${canonical.size - authored.length} explicitly labelled curriculum outlines`)
+console.log(`✓ ${canonical.size - authored.length} topics covered by the content atlas (full structured lessons)`)
 console.log(`✓ ${problems.length} authored problems, ${derivations.length} derivations`)
 console.log(`✓ ${simIds.size} interactive visualizations referenced consistently`)

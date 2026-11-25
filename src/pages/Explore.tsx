@@ -16,7 +16,7 @@ export function ExplorePage() {
     <div>
       <div className="eyebrow">Explore mathematics</div>
       <h1 style={{ fontSize: 'clamp(2rem,3.5vw,2.8rem)', margin: '10px 0' }}>The complete knowledge architecture</h1>
-      <p className="lead">{STATS.branches} branches and {STATS.topics} canonical topics — from counting to current research. Every topic has a verified place in the map; long-form articles are marked clearly, and unfinished ones are labelled outlines.</p>
+      <p className="lead">{STATS.branches} branches and {STATS.topics} canonical topics — from counting to current research. Every topic resolves to a complete structured lesson: intuition, visual understanding, definition, derivation, theorem, worked example, computation, applications, mistakes, questions and further reading. Hand-authored essays and atlas-built lessons are both marked clearly.</p>
 
       <div className="filter-bar" style={{ marginTop: 22 }}>
         <input value={q} onChange={e => setQ(e.target.value)} placeholder="Filter branches and topics…" style={{ minWidth: 260 }} />
