@@ -11,12 +11,16 @@ const result = await build({
 })
 const code = result.outputFiles[0].text
 const mod = await import('data:text/javascript;base64,' + Buffer.from(code).toString('base64'))
-const { GENERATED_FAMILIES, GENERATED_COUNT, GENERATED_IDS, getGeneratedProblem } = mod
+const {
+  GENERATED_FAMILIES, GENERATED_COUNT, GENERATED_IDS, getGeneratedProblem,
+  INTERNATIONAL_FAMILIES, INTERNATIONAL_COUNT, INTERNATIONAL_IDS, getInternationalProblem,
+} = mod
 
-if (GENERATED_IDS.length !== GENERATED_COUNT) throw new Error('ID count mismatch')
+if (GENERATED_IDS.length !== GENERATED_COUNT) throw new Error('Standard ID count mismatch')
+if (INTERNATIONAL_IDS.length !== INTERNATIONAL_COUNT) throw new Error('International ID count mismatch')
 let checked = 0
-for (const id of GENERATED_IDS) {
-  const p = getGeneratedProblem(id)
+const verify = (id, getter) => {
+  const p = getter(id)
   if (!p) throw new Error(`Missing generated problem ${id}`)
   if (p.id !== id) throw new Error(`Id mismatch for ${id}`)
   if (!p.statement || p.statement.length < 8) throw new Error(`Empty statement for ${id}`)
@@ -24,14 +28,20 @@ for (const id of GENERATED_IDS) {
   if (!p.solution?.length || !p.hints?.length) throw new Error(`Missing solution/hints for ${id}`)
   checked++
 }
+for (const id of GENERATED_IDS) verify(id, getGeneratedProblem)
+for (const id of INTERNATIONAL_IDS) verify(id, getInternationalProblem)
 // Determinism spot-check across every family.
 for (const family of GENERATED_FAMILIES) {
   for (const idx of [0, 137, 499]) {
     const id = `gen-${family.id}-${idx}`
-    const a = JSON.stringify(getGeneratedProblem(id))
-    const b = JSON.stringify(getGeneratedProblem(id))
-    if (a !== b) throw new Error(`Non-deterministic family ${family.id}`)
+    if (JSON.stringify(getGeneratedProblem(id)) !== JSON.stringify(getGeneratedProblem(id))) throw new Error(`Non-deterministic family ${family.id}`)
   }
 }
-console.log(`✓ ${checked} generated problems verified (${GENERATED_FAMILIES.length} families × 500)`)
+for (const family of INTERNATIONAL_FAMILIES) {
+  for (const idx of [0, 137, 499]) {
+    const id = `intl-${family.id}-${idx}`
+    if (JSON.stringify(getInternationalProblem(id)) !== JSON.stringify(getInternationalProblem(id))) throw new Error(`Non-deterministic family ${family.id}`)
+  }
+}
+console.log(`✓ ${checked} generated problems verified (${GENERATED_FAMILIES.length} standard + ${INTERNATIONAL_FAMILIES.length} international families × 500)`)
 console.log('✓ Every variant has statement, hints, answer and solution; generation is deterministic')

@@ -109,7 +109,9 @@ code, .mono { font-family: var(--mono); }
 .hero-stat b { font-family: var(--serif); font-size: 1.5rem; display: block; line-height: 1; color: var(--text); }
 .hero-stat span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 .stat-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 16px; }
-@media (max-width: 760px) { .stat-strip { grid-template-columns: repeat(2,1fr); } .hero { padding: 34px 24px; } }
+.stat-strip.five { grid-template-columns: repeat(5,1fr); }
+@media (max-width: 1180px) { .stat-strip.five { grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 760px) { .stat-strip, .stat-strip.five { grid-template-columns: repeat(2,1fr); } .hero { padding: 34px 24px; } }
 .branch-tile { padding: 17px; position: relative; overflow: hidden; min-height: 118px; }
 .branch-tile .bt-icon { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; margin-bottom: 13px; }
 .branch-tile h3 { font-size: 13px; margin-bottom: 4px; }

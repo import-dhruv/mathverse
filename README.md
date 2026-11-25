@@ -25,7 +25,7 @@ No backend or API key is required. Progress, notes and saved experiment paramete
 | Knowledge architecture | 34 branches in six parts, 558 canonical topic slugs, prerequisite edges, alternative paths |
 | Lessons | Long-form articles built around the five dimensions (intuition, visual, derivation, proof, computation) and a 12-section first-principles structure |
 | Derivations | Step-by-step reconstructions with assumptions, variables, result, interpretation, examples and limits |
-| Problems | Authored problems with hints, full solutions, mistakes and alternatives, plus 20,500 deterministic generated variants from 41 verified formula families |
+| Problems | Authored problems with hints, full solutions, mistakes and alternatives; **20,500** deterministic generated variants (41 families) plus **15,000 international olympiad-level problems** (30 construction-verified families) |
 | Visual mathematics | 36 canvas renderers with live parameter sliders, numerical readouts, pause/reset, save and PNG export |
 | Laboratories | 15 themed labs (algebra, geometry, calculus, linear algebra, probability, statistics, DEs, number theory, optimization, graphs, complex analysis, fractals, Fourier, numerical, AI) |
 | Proof Studio | 14 proof techniques, worked examples, scaffolded exercises, rigour checklist, Lean notes |
@@ -52,7 +52,7 @@ src/
     simulations.ts          metadata for all live visualizations
     labs.ts                 laboratory definitions
     papers.ts               curated landmark papers
-    generated/              41 deterministic families → 20,500 problems, generated on demand
+    generated/              41 standard families → 20,500 problems; 30 international families → 15,000 problems; generated on demand
     index.ts                composition layer, curriculum outlines, quick checks, statistics
   components/
     Blocks.tsx              generic renderer for structured content blocks

@@ -9,19 +9,22 @@ import { FRONTIERS, FRONTIER_BY_ID } from './content.frontiers'
 import { PROOF_TECHNIQUES, PROOF_EXERCISES } from './proofs'
 import { LABS, LAB_BY_ID } from './labs'
 import { SIMULATIONS, SIM_BY_ID } from './simulations'
-import { GENERATED_FAMILIES, GENERATED_COUNT } from './generated'
+import { GENERATED_FAMILIES, GENERATED_COUNT, INTERNATIONAL_FAMILIES, INTERNATIONAL_COUNT, ALL_GENERATED_COUNT } from './generated'
 import { PAPERS, PAPER_BY_ID, PAPERS_BY_TOPIC, PAPERS_BY_FRONTIER, PAPER_CATEGORIES } from './papers'
 
 export {
   BRANCHES, BRANCH_BY_ID, ALL_TOPIC_IDS, PART_NAMES, REFERENCES, LEARNING_PATHS, TIMELINE,
   MATHEMATICIANS, FRONTIERS, FRONTIER_BY_ID, PROOF_TECHNIQUES, PROOF_EXERCISES,
   LABS, LAB_BY_ID, SIMULATIONS, SIM_BY_ID, GENERATED_FAMILIES, GENERATED_COUNT,
+  INTERNATIONAL_FAMILIES, INTERNATIONAL_COUNT, ALL_GENERATED_COUNT,
   PAPERS, PAPER_BY_ID, PAPERS_BY_TOPIC, PAPERS_BY_FRONTIER, PAPER_CATEGORIES,
   TOPIC_SUMMARIES, TOPIC_KEY_EQUATIONS,
 }
 export {
   GENERATED_FAMILY_BY_ID, GENERATED_COUNT as TOTAL_GENERATED, getGeneratedProblem,
   getGeneratedMeta, generatedForTopic, generatedIdsForFamily, GENERATED_IDS,
+  INTERNATIONAL_FAMILY_BY_ID, INTERNATIONAL_IDS, getInternationalProblem,
+  internationalIdsForFamily, internationalForTopic,
 } from './generated'
 
 const AUTHORED: Topic[] = [...P1_TOPICS, ...P2_TOPICS, ...P3_TOPICS, ...P4_TOPICS]
@@ -156,9 +159,11 @@ export const STATS = {
   deepTopics: TOPICS.length,
   outlines: OUTLINES.length,
   derivations: DERIVATIONS.length,
-  problems: PROBLEMS.length + GENERATED_COUNT,
+  problems: PROBLEMS.length + ALL_GENERATED_COUNT,
   authoredProblems: PROBLEMS.length,
   generatedProblems: GENERATED_COUNT,
+  internationalProblems: INTERNATIONAL_COUNT,
+  totalGenerated: ALL_GENERATED_COUNT,
   simulations: SIMULATIONS.length,
   labs: LABS.length,
   proofTechniques: PROOF_TECHNIQUES.length,

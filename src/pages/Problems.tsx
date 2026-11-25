@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { ChevronRight, Target, Lightbulb, Eye, EyeOff, Check, ArrowRight, Dices } from 'lucide-react'
-import { PROBLEMS, PROBLEM_BY_ID, ALL_TOPICS, GENERATED_FAMILIES, GENERATED_COUNT } from '../data'
-import { getGeneratedProblem, generatedIdsForFamily } from '../data/generated'
+import { PROBLEMS, PROBLEM_BY_ID, ALL_TOPICS, GENERATED_FAMILIES, GENERATED_COUNT, INTERNATIONAL_FAMILIES, INTERNATIONAL_COUNT } from '../data'
+import { getGeneratedProblem, generatedIdsForFamily, getInternationalProblem, internationalIdsForFamily } from '../data/generated'
 import { go } from '../lib/router'
 import { progress, useProgress } from '../lib/store'
 import { Math as MathTex } from '../components/Math'
@@ -39,9 +39,10 @@ export function ProblemArena() {
       <h1 style={{ fontSize: 'clamp(2rem,3.4vw,2.7rem)', margin: '10px 0' }}>Practice that tests understanding</h1>
       <p className="lead">{PROBLEMS.length} authored problems plus {GENERATED_COUNT.toLocaleString()} deterministic generated variants. Solutions stay hidden until you request them.</p>
 
-      <div className="stat-strip" style={{ marginTop: 20 }}>
+      <div className="stat-strip five" style={{ marginTop: 20 }}>
         <div className="card panel"><div className="eyebrow">Authored</div><div className="m-val">{PROBLEMS.length}</div><div className="m-label">Full solutions & alternatives</div></div>
         <div className="card panel"><div className="eyebrow">Generated</div><div className="m-val">{GENERATED_COUNT.toLocaleString()}</div><div className="m-label">Deterministic variants</div></div>
+        <div className="card panel"><div className="eyebrow">International</div><div className="m-val">{INTERNATIONAL_COUNT.toLocaleString()}</div><div className="m-label">Olympiad-level problems</div></div>
         <div className="card panel"><div className="eyebrow">Solved</div><div className="m-val">{p.solved.length}</div><div className="m-label">By you</div></div>
         <div className="card panel"><div className="eyebrow">Families</div><div className="m-val">{GENERATED_FAMILIES.length}</div><div className="m-label">Verified formula templates</div></div>
       </div>
@@ -70,6 +71,29 @@ export function ProblemArena() {
         <button className="btn btn-sm" disabled={(page + 1) * pageSize >= filtered.length} onClick={() => setPage(x => x + 1)}>Next</button>
       </div>}
 
+      <div className="section-head"><div><div className="eyebrow">International level · olympiad</div><h2>15,000 competition problems</h2></div><span className="subtle">30 families × 500 deterministic variants</span></div>
+      <div className="card panel" style={{ marginBottom: 14, borderLeft: '3px solid #c79cff' }}>
+        <p className="dim" style={{ margin: 0, lineHeight: 1.7 }}>
+          Number theory, algebra, combinatorics, geometry and inequalities at international competition level.
+          Every variant is generated from a construction whose answer is exact for all parameter values —
+          solutions are included, and practice mode keeps them hidden until requested.
+        </p>
+        <button className="btn btn-primary btn-sm" style={{ marginTop: 10 }} onClick={() => {
+          const f = INTERNATIONAL_FAMILIES[new Date().getDate() % INTERNATIONAL_FAMILIES.length]
+          go(`/problem/intl-${f.id}-${new Date().getMonth() * 7 % 500}`)
+        }}>Today’s international challenge <ArrowRight size={12} /></button>
+      </div>
+      <div className="grid g3">
+        {INTERNATIONAL_FAMILIES.map(f => <button className="card card-hover" key={f.id} onClick={() => go(`/problem/intl-${f.id}-0`)} style={{ textAlign: 'left', padding: 16 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+            <span className="sim-tag" style={{ color: '#c79cff' }}>500 variants</span>
+            <span className="chip">{f.level}</span>
+          </div>
+          <h3 style={{ fontSize: 13, margin: '10px 0 5px' }}>{f.title}</h3>
+          <p className="subtle" style={{ margin: 0 }}>{f.concepts.join(' · ')}</p>
+        </button>)}
+      </div>
+
       <div className="section-head"><div><div className="eyebrow">Generated practice</div><h2>Problem families</h2></div><span className="subtle">{GENERATED_COUNT.toLocaleString()} verified variants</span></div>
       <div className="grid g3">
         {GENERATED_FAMILIES.map(f => <button className="card card-hover" key={f.id} onClick={() => go(`/problem/gen-${f.id}-0`)} style={{ textAlign: 'left', padding: 16 }}>
@@ -83,15 +107,18 @@ export function ProblemArena() {
 }
 
 export function ProblemPage({ id }: { id: string }) {
-  const view = asView(id.startsWith('gen-') ? getGeneratedProblem(id) : PROBLEM_BY_ID[id])
+  const view = asView(id.startsWith('gen-') ? getGeneratedProblem(id)
+    : id.startsWith('intl-') ? getInternationalProblem(id) : PROBLEM_BY_ID[id])
   const [revealed, setRevealed] = useState(false)
   const [hintsShown, setHintsShown] = useState(0)
   const [attempt, setAttempt] = useState('')
   const p = useProgress()
   if (!view) return <div className="empty-state">Problem not found. <button className="btn btn-sm" onClick={() => go('/problems')}>Problem bank</button></div>
 
-  const family = id.startsWith('gen-') ? /^gen-([a-z0-9-]+)-/.exec(id)?.[1] : null
-  const siblings = family ? generatedIdsForFamily(family).slice(0, 20) : []
+  const family = /^(?:gen|intl)-([a-z0-9-]+)-\d+$/.exec(id)?.[1] ?? null
+  const siblings = family
+    ? (id.startsWith('intl-') ? internationalIdsForFamily(family) : generatedIdsForFamily(family)).slice(0, 20)
+    : []
 
   return (
     <div>
@@ -101,6 +128,7 @@ export function ProblemPage({ id }: { id: string }) {
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <span className="chip">{view.type}</span><span className="chip">{view.level}</span>
             {view.generated && <span className="chip">Generated · deterministic</span>}
+            {id.startsWith('intl-') && <span className="chip" style={{ color: '#c79cff', borderColor: 'rgba(199,156,255,.4)' }}>International olympiad level</span>}
           </div>
           <h1 style={{ fontSize: 'clamp(1.7rem,3vw,2.3rem)', margin: '12px 0' }}>{view.title}</h1>
           <p style={{ fontSize: 15.5, color: 'var(--text)', lineHeight: 1.8 }}>{view.statement}</p>

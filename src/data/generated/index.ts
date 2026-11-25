@@ -96,7 +96,15 @@ export const GENERATED_FAMILIES: GeneratedFamily[] = [
     make: i => { const a=pick(i,1,1,9), b=pick(i,2,1,9); return { statement: `Evaluate lim_{x→∞} (${a}x² + ${b})/(${a}x² + 1).`, hints: ['Divide by the highest power of x.'], answer: '1', solution: [sol('Dominant terms', `Both numerator and denominator are dominated by ${a}x², so the limit is 1.`)] } } },
 ]
 
+export {
+  INTERNATIONAL_FAMILIES, INTERNATIONAL_COUNT, INTERNATIONAL_FAMILY_BY_ID,
+  INTERNATIONAL_IDS, getInternationalProblem, internationalIdsForFamily,
+  internationalForTopic,
+} from './international'
+import { INTERNATIONAL_COUNT, internationalForTopic as internationalTopics } from './international'
+
 export const GENERATED_COUNT = GENERATED_FAMILIES.length * 500
+export const ALL_GENERATED_COUNT = GENERATED_COUNT + INTERNATIONAL_COUNT
 export const GENERATED_FAMILY_BY_ID = Object.fromEntries(GENERATED_FAMILIES.map(f => [f.id, f])) as Record<string, GeneratedFamily>
 
 export function getGeneratedProblem(id: string): GeneratedProblem | null {
@@ -122,7 +130,8 @@ export function getGeneratedMeta(id: string) {
 export const GENERATED_IDS = GENERATED_FAMILIES.flatMap(f => Array.from({ length: 500 }, (_, i) => `gen-${f.id}-${i}`))
 
 export function generatedForTopic(topicId: string): string[] {
-  return GENERATED_FAMILIES.filter(f => f.topicId === topicId).flatMap(f => Array.from({ length: 12 }, (_, i) => `gen-${f.id}-${i}`))
+  const standard = GENERATED_FAMILIES.filter(f => f.topicId === topicId).flatMap(f => Array.from({ length: 12 }, (_, i) => `gen-${f.id}-${i}`))
+  return [...standard, ...internationalTopics(topicId)]
 }
 
 export function generatedIdsForFamily(familyId: string): string[] {
