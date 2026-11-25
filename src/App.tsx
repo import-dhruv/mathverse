@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   Home, Compass, Route as RouteIcon, Shapes, FlaskConical, FileCheck2, Target,
   Library as LibraryIcon, History, Sparkles, ChartNoAxesCombined, NotebookPen,
-  Search, Menu, X, ChevronRight, Sigma, Telescope, Network, BookOpen, Sun, Moon,
+  Search, Menu, X, ChevronRight, Sigma, Telescope, Network, BookOpen, Sun, Moon, FileText,
 } from 'lucide-react'
 import { GlobalSearch } from './components/Search'
 import { useRoute, go } from './lib/router'
@@ -24,6 +24,7 @@ import { ProgressPage } from './pages/Progress'
 import { LibraryPage } from './pages/Library'
 import { TutorPage } from './pages/Tutor'
 import { WorkspacePage } from './pages/Workspace'
+import { PapersPage } from './pages/Papers'
 
 const NAV = [
   { path: '/', label: 'Home', icon: Home },
@@ -41,6 +42,7 @@ const NAV = [
 ]
 
 const MORE = [
+  { path: '/papers', label: 'Live Paper Archive', icon: FileText },
   { path: '/derivations', label: 'Derivation Library', icon: Sigma },
   { path: '/research', label: 'Research Frontiers', icon: Telescope },
   { path: '/graph', label: 'Knowledge Graph', icon: Network },
@@ -109,6 +111,7 @@ function RouteView({ route }: { route: string }) {
     case 'graph': return <GraphPage />
     case 'progress': return <ProgressPage />
     case 'library': return <LibraryPage />
+    case 'papers': return <PapersPage />
     case 'tutor': return <TutorPage />
     case 'workspace': return <WorkspacePage />
     default: return <HomePage />

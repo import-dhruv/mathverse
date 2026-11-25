@@ -31,6 +31,7 @@ No backend or API key is required. Progress, notes and saved experiment paramete
 | Proof Studio | 14 proof techniques, worked examples, scaffolded exercises, rigour checklist, Lean notes |
 | Learning paths | 8 paths with a first-principles atlas: worldview, origin question, chapter-by-chapter conceptual arc, per-step question/idea/bridge rationales, essential questions, unifying themes, capstone challenge and cross-path connections |
 | Research library | Universal research method (epistemic ladder, research cycle, modes of work), 9 detailed guides on reading/proof/writing/reviewing/tools/integrity, annotated source atlas of open databases, preprint servers, journals and software, 5 curated reading routes, research glossary, landmark papers, frontier prerequisite maps and a persistent paper-study desk with Markdown export |
+| Live paper archive | Serverless search proxies over **OpenAlex** (250M+ works) and **Crossref** (DOI registry), with filters, pagination, open-access links, MATHVERSE topic matching and a local reading list — papers are linked, never hosted |
 | Research frontiers | 21 frontiers with proven/conjecture/open labels, historical background, formal statements, prerequisites, known results, researchers, directions and references |
 | History | 32 milestones from Babylon to contemporary AI mathematics, 28 mathematicians, mathematical ideas rather than biographies |
 | Connections | Interactive knowledge graph with prerequisite edges and branch filters |
@@ -65,7 +66,10 @@ src/
     Search.tsx              global command-bar search (⌘/Ctrl+K)
   pages/                    one module per navigation destination
   styles/global.css         design system with dark and light themes
-scripts/                    content, LaTeX and generated-problem audits
+scripts/                    content, LaTeX, generated-problem and atlas audits
+api/
+  papers.js                 OpenAlex live search proxy (global scholarly index)
+  crossref.js               Crossref live search proxy (DOI registry)
 ```
 
 ## Content model and integrity rules
