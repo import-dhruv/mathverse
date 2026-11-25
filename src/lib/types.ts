@@ -154,6 +154,12 @@ export interface ReferenceItem {
   openAccess: boolean
 }
 
+export interface PathStepRationale {
+  question: string      // the human question this step answers
+  idea: string          // the first-principles idea, stated plainly
+  bridge: string        // how it makes the next step necessary
+}
+
 export interface LearningPath {
   id: string
   title: string
@@ -165,6 +171,15 @@ export interface LearningPath {
   objectives: string[]
   hours: number
   completion: string
+  study: {
+    firstPrinciple: string
+    worldview: string
+    arc: { title: string; text: string; math?: string }[]
+    essentialQuestions: string[]
+    themes: string[]
+    rationale: Record<string, PathStepRationale>
+    capstone: { title: string; prompt: string; deliverables: string[] }
+  }
 }
 
 export interface TimelineEvent {

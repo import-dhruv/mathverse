@@ -29,6 +29,7 @@ No backend or API key is required. Progress, notes and saved experiment paramete
 | Visual mathematics | 36 canvas renderers with live parameter sliders, numerical readouts, pause/reset, save and PNG export |
 | Laboratories | 15 themed labs (algebra, geometry, calculus, linear algebra, probability, statistics, DEs, number theory, optimization, graphs, complex analysis, fractals, Fourier, numerical, AI) |
 | Proof Studio | 14 proof techniques, worked examples, scaffolded exercises, rigour checklist, Lean notes |
+| Learning paths | 8 paths with a first-principles atlas: worldview, origin question, chapter-by-chapter conceptual arc, per-step question/idea/bridge rationales, essential questions, unifying themes, capstone challenge and cross-path connections |
 | Research | 21 frontiers with proven/conjecture/open labels, historical background, formal statements, prerequisites, known results, researchers, directions and references |
 | History | 32 milestones from Babylon to contemporary AI mathematics, 28 mathematicians, mathematical ideas rather than biographies |
 | Connections | Interactive knowledge graph with prerequisite edges and branch filters |
